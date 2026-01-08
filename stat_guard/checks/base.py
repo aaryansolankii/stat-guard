@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Dict
+from typing import List, Optional
 import pandas as pd
 from ..violations import Violation
 
@@ -18,7 +18,11 @@ class StatisticalCheck(ABC):
         target_col: str,
         group_col: Optional[str],
         **policy
-    ) -> Optional[Violation]:
+    ) -> List[Violation]:
+        """
+        Must return a list of violations.
+        Empty list means no issues found.
+        """
         pass
 
     def _groups(self, data, target_col, group_col):

@@ -11,6 +11,7 @@ def validate(
     *,
     target_col: str,
     group_col: Optional[str] = None,
+    unit_col: Optional[str] = None,
     policy: str = "default",
     fail_fast: bool = False,
 ) -> ValidationReport:
@@ -18,6 +19,10 @@ def validate(
         data=data,
         target_col=target_col,
         group_col=group_col,
+        unit_col=unit_col,
         policy=policy,
         fail_fast=fail_fast,
     )
+
+def register_validator(check):
+    _engine.register(check)

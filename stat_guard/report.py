@@ -1,15 +1,20 @@
-from typing import List
+from collections import defaultdict
+from typing import Dict, List
 from .violations import Violation, Severity
 
 
 class ValidationReport:
-    """Collects and summarizes validation results."""
+    """Structured, multi-check validation report."""
 
     def __init__(self):
-        self.violations: List[Violation] = []
+        self._by_check: Dict[str, List[Violation]] = defaultdict(list)
 
-    def add_violation(self, violation: Violation):
-        self.violations.append(violation)
+    def add_violation(self, check_name: str, violation: Violation):
+        self._by_check[check_name].append(violation)
+
+    @property
+    def violations(self) -> List[Violation]:
+        return [v for vs in self._by_check.values() for v in vs]
 
     @property
     def errors(self) -> List[Violation]:
@@ -23,11 +28,19 @@ class ValidationReport:
     def is_valid(self) -> bool:
         return len(self.errors) == 0
 
-    def __str__(self) -> str:
+    def as_dict(self):
+        return {
+            check: [v.__dict__ for v in violations]
+            for check, violations in self._by_check.items()
+        }
+
+    def __str__(self):
         if self.is_valid:
             return "✓ Validation passed (no statistical errors detected)"
 
         lines = ["✗ Validation failed:"]
-        for v in self.violations:
-            lines.append(str(v))
+        for check, violations in self._by_check.items():
+            lines.append(f"\n[{check}]")
+            for v in violations:
+                lines.append(str(v))
         return "\n".join(lines)

@@ -2,6 +2,7 @@ from typing import Optional
 import pandas as pd
 from .base import StatisticalCheck
 from ..violations import Violation, Severity, ViolationCodes
+import numpy as np
 
 
 class MinimumSampleSizeCheck(StatisticalCheck):
@@ -55,3 +56,38 @@ class BalancedGroupsCheck(StatisticalCheck):
                 context={"ratio": ratio},
             )
         return None
+    
+class CovariateBalanceCheck(StatisticalCheck):
+
+    @property
+    def name(self):
+        return "Covariate Balance (SMD)"
+
+    def run(self, data, target_col, group_col, max_smd=0.25, **_):
+        if group_col is None:
+            return []
+
+        groups = self._groups(data, target_col, group_col)
+        if len(groups) != 2:
+            return []
+
+        (g1, x1), (g2, x2) = groups.items()
+        pooled_std = np.sqrt((x1.var() + x2.var()) / 2)
+
+        if pooled_std == 0:
+            return []
+
+        smd = abs(x1.mean() - x2.mean()) / pooled_std
+
+        if smd > max_smd:
+            return [
+                Violation(
+                    code=ViolationCodes.UNBALANCED_GROUPS,
+                    severity=Severity.WARNING,
+                    message=f"SMD imbalance detected ({smd:.2f})",
+                    suggestion="Consider stratification or rebalancing",
+                    context={"smd": smd},
+                )
+            ]
+
+        return []
