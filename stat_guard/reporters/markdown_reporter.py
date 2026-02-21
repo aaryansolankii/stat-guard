@@ -4,7 +4,8 @@ Markdown report generator for StatGuard.
 
 from typing import Optional
 from datetime import datetime
-
+from __future__ import annotations
+from stat_guard.report import ValidationReport
 
 class MarkdownReporter:
     """Generate Markdown validation reports."""
