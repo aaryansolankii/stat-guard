@@ -3,7 +3,8 @@ HTML report generator for StatGuard.
 
 Creates interactive, visually appealing reports similar to ydata-profiling.
 """
-
+from __future__ import annotations
+from stat_guard.report import ValidationReport
 from typing import Dict, List, Any, Optional
 import base64
 from io import BytesIO
