@@ -1,8 +1,7 @@
-from __future__ import annotations
 """
 Markdown report generator for StatGuard.
 """
-
+from __future__ import annotations
 from typing import Optional
 from datetime import datetime
 from stat_guard.report import ValidationReport
