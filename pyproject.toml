@@ -77,10 +77,6 @@ exclude = ["tests*"]
 line-length = 88
 target-version = ["py38"]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-
-
 
 [tool.mypy]
 python_version = "3.8"
@@ -88,3 +84,10 @@ warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
 disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-ra"
