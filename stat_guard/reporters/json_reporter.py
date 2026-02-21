@@ -1,7 +1,8 @@
 """
 JSON report generator for StatGuard.
 """
-
+from __future__ import annotations
+from stat_guard.report import ValidationReport
 import json
 from typing import Dict, Any, Optional
 from datetime import datetime
