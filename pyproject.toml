@@ -1,61 +1,77 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "stat-guard"
-version = "0.2.0"
-description = "Prevent statistically invalid analyses from being shipped"
+version = "0.3.0"
+description = "Production-Grade Statistical Data Validation & Profiling"
 readme = "README.md"
-requires-python = ">=3.8"
-license = { text = "MIT" }
-
+license = {text = "MIT"}
 authors = [
     { name = "Aaryan Solanki", email = "aryan.solanki.stats@gmail.com" }
 ]
 
 keywords = [
+    "data validation",
+    "statistical validation",
+    "data quality",
+    "data profiling",
+    "A/B testing",
+    "experimentation",
     "statistics",
-    "validation",
-    "experiments",
-    "ab-testing",
-    "data-quality"
 ]
-
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "Topic :: Scientific/Engineering :: Mathematics",
     "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-
+requires-python = ">=3.8"
 dependencies = [
     "pandas>=1.3.0",
     "numpy>=1.20.0",
     "scipy>=1.7.0",
+    "statsmodels>=0.13.0",
 ]
 
 [project.optional-dependencies]
+stats = [
+    "statsmodels>=0.13.0",
+]
 dev = [
-    "pytest>=7.0",
-    "pytest-cov>=3.0",
-    "black>=22.0",
-    "flake8>=4.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
     "mypy>=0.950",
 ]
+docs = [
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+]
+
+[project.scripts]
+statguard = "stat_guard.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/aaryansolankii/stat-guard"
 Repository = "https://github.com/aaryansolankii/stat-guard"
 Issues = "https://github.com/aaryansolankii/stat-guard/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["stat_guard*"]
+exclude = ["tests*"]
 
 [tool.black]
 line-length = 88
@@ -63,9 +79,21 @@ target-version = ["py38"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+=======
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
 
 [tool.mypy]
 python_version = "3.8"
 warn_return_any = true
 warn_unused_configs = true
+
 ignore_missing_imports = true
+=======
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
